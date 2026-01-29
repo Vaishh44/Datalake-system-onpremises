@@ -13,7 +13,7 @@ def ingest_data():
         .config("spark.sql.catalog.local", "org.apache.iceberg.spark.SparkCatalog") \
         .config("spark.sql.catalog.local.type", "hadoop") \
         .config("spark.sql.catalog.local.warehouse", "s3a://warehouse/iceberg_warehouse") \
-        .config("spark.hadoop.fs.s3a.endpoint", "http://minio:9000") \
+        .config("spark.hadoop.fs.s3a.endpoint", "http://host.docker.internal:9878") \
         .config("spark.hadoop.fs.s3a.access.key", "minioadmin") \
         .config("spark.hadoop.fs.s3a.secret.key", "minioadmin") \
         .config("spark.hadoop.fs.s3a.path.style.access", "true") \

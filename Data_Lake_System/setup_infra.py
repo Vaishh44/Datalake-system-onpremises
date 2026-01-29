@@ -1,14 +1,14 @@
 import boto3
 from botocore.exceptions import ClientError
 
-def setup_minio():
-    # MinIO configuration
-    s3_endpoint = 'http://localhost:9000'
+def setup_ozone():
+    # Ozone configuration
+    s3_endpoint = 'http://localhost:9878'
     access_key = 'minioadmin'
     secret_key = 'minioadmin'
     bucket_name = 'warehouse'
 
-    print(f"Connecting to MinIO at {s3_endpoint}...")
+    print(f"Connecting to Ozone at {s3_endpoint}...")
     
     try:
         s3 = boto3.resource('s3',
@@ -38,7 +38,7 @@ def setup_minio():
         else:
             print(f"FAILED: Error checking bucket: {e}")
     except Exception as e:
-        print(f"FAILED: Could not connect to MinIO. Is it running? Error: {e}")
+        print(f"FAILED: Could not connect to Ozone. Is it running? Error: {e}")
 
 if __name__ == "__main__":
-    setup_minio()
+    setup_ozone()

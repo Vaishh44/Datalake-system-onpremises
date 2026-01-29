@@ -8,6 +8,8 @@ services:
       - '8082:8080'
     volumes:
       - ./trino/etc:/etc/trino
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   metastore_db:
     image: postgres:11
@@ -38,7 +40,7 @@ services:
       HIVE_METASTORE_USER: hive
       HIVE_METASTORE_PASSWORD: hive
       HIVE_METASTORE_WAREHOUSE_DIR: s3://datalake/
-      S3_ENDPOINT: http://minio:9000
+      S3_ENDPOINT: http://host.docker.internal:9878
       S3_ACCESS_KEY: minioadmin
       S3_SECRET_KEY: minioadmin
       S3_PATH_STYLE_ACCESS: "true"
@@ -60,34 +62,10 @@ services:
       HIVE_METASTORE_USERS_IN_ADMIN_ROLE: "admin"
     depends_on:
       - metastore_db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     healthcheck:
       test: bash -c "exec 6<> /dev/tcp/localhost/9083"
-
-  minio:
-    image: minio/minio
-    environment:
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
-      - MINIO_DOMAIN=minio
-    networks:
-      default:
-        aliases:
-          - warehouse.minio
-    ports:
-      - 9003:9001
-      - 9002:9000
-    command: [ "server", "/data", "--console-address", ":9001" ]
-
-  mc:
-    depends_on:
-      - minio
-    image: minio/mc
-    environment:
-      - AWS_ACCESS_KEY_ID=minioadmin
-      - AWS_SECRET_ACCESS_KEY=minioadmin
-      - AWS_REGION=us-east-1
-    entrypoint: >
-      /bin/sh -c " until (/usr/bin/mc alias set minio http://minio:9000 minioadmin minioadmin) do echo '...waiting...' && sleep 1; done; /usr/bin/mc rm -r --force minio/warehouse; /usr/bin/mc mb minio/warehouse; /usr/bin/mc policy set public minio/warehouse; tail -f /dev/null "
 
 volumes:
   hive-metastore-postgresql:
