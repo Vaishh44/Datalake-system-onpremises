@@ -9,7 +9,7 @@ x-common-config: &common-config
     - ozone-net
 
 x-replication: &replication
-  OZONE-SITE.XML_ozone.server.default.replication: ${OZONE_REPLICATION_FACTOR:-1}
+  OZONE-SITE.XML_ozone.server.default.replication: 1
 
 services:
 
