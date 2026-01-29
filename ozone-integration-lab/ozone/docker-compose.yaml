@@ -1,9 +1,7 @@
 version: "3.8"
 
 x-common-config: &common-config
-  image: ${OZONE_RUNNER_IMAGE}:${OZONE_RUNNER_VERSION}
-  volumes:
-  - ../../ozone-2.2.0-SNAPSHOT:/opt/hadoop
+  image: apache/ozone:1.4.0
 
   env_file:
     - docker-config
@@ -18,7 +16,7 @@ services:
   scm:
     <<: *common-config
     hostname: scm
-    command: ["ozone", "scm"]
+    command: [ "ozone", "scm" ]
     environment:
       <<: *replication
       ENSURE_SCM_INITIALIZED: /data/metadata/scm/current/VERSION
@@ -30,7 +28,7 @@ services:
   om:
     <<: *common-config
     hostname: om
-    command: ["ozone", "om"]
+    command: [ "ozone", "om" ]
     environment:
       <<: *replication
       ENSURE_OM_INITIALIZED: /data/metadata/om/current/VERSION
@@ -43,7 +41,7 @@ services:
   datanode:
     <<: *common-config
     hostname: datanode
-    command: ["ozone", "datanode"]
+    command: [ "ozone", "datanode" ]
     environment:
       <<: *replication
     ports:
@@ -55,7 +53,7 @@ services:
   recon:
     <<: *common-config
     hostname: recon
-    command: ["ozone", "recon"]
+    command: [ "ozone", "recon" ]
     environment:
       <<: *replication
     ports:
@@ -66,7 +64,7 @@ services:
   s3g:
     <<: *common-config
     hostname: s3g
-    command: ["ozone", "s3g"]
+    command: [ "ozone", "s3g" ]
     environment:
       <<: *replication
     ports:
@@ -78,4 +76,3 @@ services:
 networks:
   ozone-net:
     driver: bridge
-
