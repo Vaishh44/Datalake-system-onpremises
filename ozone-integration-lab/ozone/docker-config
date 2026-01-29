@@ -68,3 +68,4 @@ no_proxy=om,scm,s3g,recon,kdc,localhost,127.0.0.1
 OZONE-SITE.XML_ozone.filesystem.snapshot.enabled=true
 OZONE-SITE.XML_ozone.replication=1
 OZONE-SITE.XML_ozone.server.default.replication=1
+OZONE-SITE.XML_ozone.om.s3.storage.class.map=STANDARD=RATIS/ONE,REDUCED_REDUNDANCY=RATIS/ONE
